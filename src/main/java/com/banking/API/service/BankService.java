@@ -6,6 +6,7 @@ import com.banking.API.repository.AccountRepository;
 import com.banking.API.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -69,8 +70,8 @@ public class BankService {
     public List<TransactionResponse> getTransactions(String accountID) {
         findAccount(accountID);
         List<TransactionResponse> result = new ArrayList<>();
-        for (Transaction t : transactions) {
-            if (t.involves(accountId)) result.add(toResponse(t));
+        for (Transaction t : transactionRepository.findByAccountID(accountID)) {
+            result.add(toResponse(t));
         }
         result.sort(Comparator.comparing(TransactionResponse::timestamp).reversed());
         return result;
