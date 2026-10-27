@@ -68,10 +68,12 @@ public class BankService {
 
     public List<TransactionResponse> getTransactions(String accountID) {
         findAccount(accountID);
-        return transactionRepository.findByAccountID(accountID).stream()
-            .sorted(Comparator.comparing(Transaction::timestamp).reversed())
-            .map(this::toResponse)
-            .toList();
+        List<TransactionResponse> result = new ArrayList<>();
+        for (Transaction t : transactions) {
+            if (t.involves(accountId)) result.add(toResponse(t));
+        }
+        result.sort(Comparator.comparing(TransactionResponse::timestamp).reversed());
+        return result;
     }
 
     private Account findAccount(String ID) {
