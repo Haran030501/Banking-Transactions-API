@@ -1,8 +1,0 @@
-package com.banking.API.dto;
-import java.math.BigDecimal;
-
-public record AccountResponse (
-    String id,
-    String accountHolder,
-    BigDecimal balance
-) {}
